@@ -21,14 +21,20 @@ HMSBroadcastExtensionSDK is made specifically to be used in the iOS broadcast up
 ### Using Swift Package Manager
 You can use [Swift Package Manager](https://www.swift.org/package-manager) (use https://github.com/100mslive/100ms-ios-broadcast-sdk.git as the package source)
 
+Add HMSBroadcastExtensionSDK to your main app target from Swift Package Manager. Then add HMSBroadcastExtensionSDK to your iOS broadcast upload extension target.
+
 ### Using Cocoapods
 
-Get the HMSBroadcastExtensionSDK via [Cocoapods](https://cocoapods.org/). Add the `pod 'HMSBroadcastExtensionSDK'` to your Podfile as follows:
+Get the HMSBroadcastExtensionSDK via [Cocoapods](https://cocoapods.org/). Add the `pod 'HMSBroadcastExtensionSDK'` to your broadcast upload extension target in Podfile as follows:
 
   ```ruby
   # Podfile
   
   platform :ios, '12.0'
+  
+  target 'MainApp' do
+    pod 'HMSSDK'
+  end
 
   target 'HMSScreenShare' do
     pod 'HMSBroadcastExtensionSDK'
@@ -71,14 +77,27 @@ iOS broadcast extension provides you with CMSampleBuffers that you can process u
   
   HMSScreenRenderer uses this app group string to talk to your main app.
   
-  In your broadcast extension you create a subclass of RPBroadcastSampleHandler class. This class handles screen frame samples produced by Replaykit. Replaykit delivers these frame as CMSampleBuffer to processSampleBuffer function.
+## How to share screen in meeting
   
-5. In your processSampleBuffer function call process function on your screenRenderer instance passing the CMSampleBuffer like below:
+In your broadcast extension you create a subclass of RPBroadcastSampleHandler class. This class handles screen frame samples produced by Replaykit. Replaykit delivers these frame as CMSampleBuffer to processSampleBuffer function.
+  
+In your processSampleBuffer function call process function on your screenRenderer instance passing the CMSampleBuffer like below:
   
   ```swift
     screenRenderer.process(sampleBuffer)
   ```
+  
+## How to invalidate the connection between main app and extension when user stops screen recording
 
-👀 To see a Example iOS broadcast upload extension implementation for screen sharing using 100ms Broadcast extension SDK, checkout the [our Example project](https://github.com/100mslive/100ms-ios-sdk/tree/main/Example).
+When user stops screen sharing broadcastFinished function is called on your RPBroadcastSampleHandler class. At that point call invalidate on your screenRenderer instance to stop sceen sharing.
+
+```swift
+    override func broadcastFinished() {
+        // User has requested to finish the broadcast.
+        self.screenRenderer.invalidate()
+    }
+  ```
+
+👀 To see an example iOS broadcast upload extension implementation for screen sharing using 100ms Broadcast extension SDK, checkout [our Example project](https://github.com/100mslive/100ms-ios-sdk/tree/main/Example).
 
 📲 Download the 100ms fully featured Sample iOS app here: https://testflight.apple.com/join/dhUSE7N8
