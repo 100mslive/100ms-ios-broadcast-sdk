@@ -14,8 +14,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "HMSBroadcastExtensionSDK",
-            url: "https://github.com/100mslive/100ms-ios-broadcast-sdk/releases/download/0.0.1/HMSBroadcastExtensionSDK.xcframework.zip",
-            checksum: "8b504c8a7c04f1a383d497e041629fefef25633fce93fdce1f74607a571eefdc"
+            url: "https://github.com/100mslive/100ms-ios-broadcast-sdk/releases/download/0.0.2/HMSBroadcastExtensionSDK.xcframework.zip",
+            checksum: "986b1a7da4693b14ce57647f0bc9649bffcfd7746f2f9c8dd5da6ca021ae6407"
         )
     ]
 )
